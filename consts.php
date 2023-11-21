@@ -31,9 +31,14 @@ const INSTALLER_TO_PHP_VERSIONS = [
         '8.1',
         '8.2',
     ],
-    '5' => [
+    '5.2' => [
         '8.1',
         '8.2',
+        '8.3',
+    ],
+    '5' => [
+        '8.1',
+        '8.2'
     ],
 ];
 
@@ -41,6 +46,7 @@ const DB_MYSQL_57 = 'mysql57';
 const DB_MYSQL_57_PDO = 'mysql57pdo';
 const DB_MYSQL_80 = 'mysql80';
 const DB_PGSQL = 'pgsql';
+const DB_MARIADB = 'mariadb';
 
 // Used when determining the version of installer to used. Intentionally doesn't include recipes
 const LOCKSTEPPED_REPOS = [
@@ -97,6 +103,7 @@ const NO_INSTALLER_UNLOCKSTEPPED_REPOS = [
     'api.silverstripe.org',
     'cow',
     'silverstripe-config',
+    'markdown-php-codesniffer',
 ];
 
 const CMS_TO_REPO_MAJOR_VERSIONS = [
@@ -473,6 +480,61 @@ const INSTALLER_TO_REPO_MINOR_VERSIONS = [
         'silverstripe-widgets' => '3.0',
     ],
     '5.1' => [
+        'cwp-agencyextensions' => '3.1',
+        'cwp-starter-theme' => '4.0',
+        'cwp-watea-theme' => '4.0',
+        'silverstripe-advancedworkflow' => '6.1',
+        'silverstripe-auditor' => '3.0',
+        'silverstripe-blog' => '4.1',
+        'silverstripe-composer-update-checker' => '4.0',
+        'silverstripe-contentreview' => '5.1',
+        'silverstripe-crontask' => '3.0',
+        'silverstripe-developer-docs' => '5.1',
+        'silverstripe-documentconverter' => '3.1',
+        'silverstripe-dynamodb' => '5.0',
+        'silverstripe-elemental' => '5.1',
+        'silverstripe-elemental-bannerblock' => '3.1',
+        'silverstripe-elemental-fileblock' => '3.1',
+        'silverstripe-elemental-userforms' => '4.1',
+        'silverstripe-environmentcheck' => '3.0',
+        'silverstripe-externallinks' => '3.1',
+        'silverstripe-fluent' => '7.0',
+        'silverstripe-graphql' => '5.1',
+        'silverstripe-gridfield-bulk-editing-tools' => '4.0',
+        'silverstripe-gridfieldextensions' => '4.0',
+        'silverstripe-gridfieldqueuedexport' => '3.1',
+        'silverstripe-hybridsessions' => '3.0',
+        'silverstripe-iframe' => '3.1',
+        'silverstripe-ldap' => '2.1',
+        'silverstripe-login-forms' => '5.1',
+        'silverstripe-lumberjack' => '3.0',
+        'silverstripe-maintenance' => '3.0',
+        'silverstripe-mfa' => '5.1',
+        'silverstripe-mimevalidator' => '3.0',
+        'silverstripe-multivaluefield' => '6.0',
+        'silverstripe-queuedjobs' => '5.0',
+        'silverstripe-realme' => '5.2',
+        'silverstripe-registry' => '3.1',
+        'silverstripe-restfulserver' => '3.0',
+        'silverstripe-securityreport' => '3.0',
+        'silverstripe-segment-field' => '3.1',
+        'silverstripe-session-manager' => '2.1',
+        'silverstripe-sharedraftcontent' => '3.1',
+        'silverstripe-simple' => '3.3',
+        'silverstripe-sitewidecontent-report' => '4.1',
+        'silverstripe-spamprotection' => '4.1',
+        'silverstripe-staticpublishqueue' => '6.1',
+        'silverstripe-subsites' => '3.1',
+        'silverstripe-tagfield' => '3.1',
+        'silverstripe-taxonomy' => '3.1',
+        'silverstripe-textextraction' => '4.0',
+        'silverstripe-totp-authenticator' => '5.1',
+        'silverstripe-userforms' => '6.1',
+        'silverstripe-vendor-plugin' => '2.0',
+        'silverstripe-versionfeed' => '3.1',
+        'silverstripe-webauthn-authenticator' => '5.1',
+    ],
+    '5.2' => [
         'cwp-agencyextensions' => '3.1',
         'cwp-starter-theme' => '4.0',
         'cwp-watea-theme' => '4.0',

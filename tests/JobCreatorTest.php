@@ -264,7 +264,7 @@ class JobCreatorTest extends TestCase
                     [
                         'installer_version' => '5.x-dev',
                         'php' => '8.1',
-                        'db' => DB_MYSQL_57,
+                        'db' => DB_MARIADB,
                         'composer_require_extra' => '',
                         'composer_args' => '',
                         'name_suffix' => '',
@@ -276,7 +276,7 @@ class JobCreatorTest extends TestCase
                         'endtoend_suite' => 'root',
                         'endtoend_config' => '',
                         'js' => 'false',
-                        'name' => '8.1 mysql57 phpunit all',
+                        'name' => '8.1 mariadb phpunit all',
                     ],
                     [
                         'installer_version' => '5.x-dev',
@@ -675,9 +675,9 @@ class JobCreatorTest extends TestCase
             // fallback to looking at deps in composer.json, use current minor of installer .x-dev
             ['myaccount/silverstripe-admin', 'mybranch', ['silverstripe/framework' => '5.x-dev'], '5.x-dev'],
             ['myaccount/silverstripe-admin', 'mybranch', ['silverstripe/framework' => '5.0.x-dev'], '5.0.x-dev'],
-            ['myaccount/silverstripe-admin', 'mybranch', ['silverstripe/framework' => '^5'], '5.1.x-dev'],
-            ['myaccount/silverstripe-somemodule', 'mybranch', ['silverstripe/cms' => '^5'], '5.1.x-dev'],
-            ['myaccount/silverstripe-somemodule', 'mybranch', ['silverstripe/admin' => '^2'], '5.1.x-dev'],
+            ['myaccount/silverstripe-admin', 'mybranch', ['silverstripe/framework' => '^5'], '5.2.x-dev'],
+            ['myaccount/silverstripe-somemodule', 'mybranch', ['silverstripe/cms' => '^5'], '5.2.x-dev'],
+            ['myaccount/silverstripe-somemodule', 'mybranch', ['silverstripe/admin' => '^2'], '5.2.x-dev'],
             ['myaccount/silverstripe-somemodule', '3', ['silverstripe/framework' => '^5'], '5.x-dev'],
         ];
     }
@@ -771,7 +771,7 @@ class JobCreatorTest extends TestCase
                 '5.x-dev',
                 [
                     '8.1 prf-low mysql57 phpunit all',
-                    '8.1 mysql57 phpunit all',
+                    '8.1 mariadb phpunit all',
                     '8.2 mysql80 phpunit all'
                 ]
             ],
@@ -781,7 +781,7 @@ class JobCreatorTest extends TestCase
                 '5.x-dev',
                 [
                     '8.1 prf-low mysql57 phpunit all',
-                    '8.1 mysql57 phpunit all',
+                    '8.1 mariadb phpunit all',
                     '8.2 mysql80 phpunit all'
                 ]
             ],
@@ -791,7 +791,7 @@ class JobCreatorTest extends TestCase
                 '5.x-dev',
                 [
                     '8.1 prf-low mysql57 phpunit all',
-                    '8.1 mysql57 phpunit all',
+                    '8.1 mariadb phpunit all',
                     '8.2 mysql80 phpunit all'
                 ]
             ],
