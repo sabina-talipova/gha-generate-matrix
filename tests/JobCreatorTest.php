@@ -514,6 +514,7 @@ class JobCreatorTest extends TestCase
             ['^7 <7.4', ['7.3', '7.3', '7.3', '7.3']],
             ['7.3-7.4', ['7.3', '7.4', '7.4', '7.4']],
             ['7.3 - 8.0', ['7.3', '7.4', '8.0', '8.0']],
+            ['^8.1', ['8.1', '8.2', '8.3']],
         ];
     }
 
@@ -675,9 +676,9 @@ class JobCreatorTest extends TestCase
             // fallback to looking at deps in composer.json, use current minor of installer .x-dev
             ['myaccount/silverstripe-admin', 'mybranch', ['silverstripe/framework' => '5.x-dev'], '5.x-dev'],
             ['myaccount/silverstripe-admin', 'mybranch', ['silverstripe/framework' => '5.0.x-dev'], '5.0.x-dev'],
-            ['myaccount/silverstripe-admin', 'mybranch', ['silverstripe/framework' => '^5'], '5.1.x-dev'],
-            ['myaccount/silverstripe-somemodule', 'mybranch', ['silverstripe/cms' => '^5'], '5.1.x-dev'],
-            ['myaccount/silverstripe-somemodule', 'mybranch', ['silverstripe/admin' => '^2'], '5.1.x-dev'],
+            ['myaccount/silverstripe-admin', 'mybranch', ['silverstripe/framework' => '^5'], '5.2.x-dev'],
+            ['myaccount/silverstripe-somemodule', 'mybranch', ['silverstripe/cms' => '^5'], '5.2.x-dev'],
+            ['myaccount/silverstripe-somemodule', 'mybranch', ['silverstripe/admin' => '^2'], '5.2.x-dev'],
             ['myaccount/silverstripe-somemodule', '3', ['silverstripe/framework' => '^5'], '5.x-dev'],
         ];
     }
