@@ -214,6 +214,7 @@ class JobCreator
             }
         }
         $phpVersions = INSTALLER_TO_PHP_VERSIONS[$key] ?? INSTALLER_TO_PHP_VERSIONS['4'];
+        var_dump($phpVersions);
         // Use the max allowed php version
         if (!array_key_exists($phpIndex, $phpVersions)) {
             for ($i = count($phpVersions) - 1; $i >= 0; $i--) {
