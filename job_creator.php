@@ -378,6 +378,11 @@ class JobCreator
                     'phpunit' => true,
                     'phpunit_suite' => $suite,
                 ]);
+                $matrix['include'][] = $this->createJob(2, [
+                    'db' => DB_MYSQL_80,
+                    'phpunit' => true,
+                    'phpunit_suite' => $suite,
+                ]);
             }
         }
         return $matrix;
