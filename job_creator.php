@@ -387,6 +387,7 @@ class JobCreator
                     'phpunit' => true,
                     'phpunit_suite' => $suite,
                 ]);
+                echo $this->getBranchVersion();
                 if ($this->getBranchVersion() === '5.1') {
                     $matrix['include'][] = $this->createJob(2, [
                         'db' => DB_MYSQL_80,
