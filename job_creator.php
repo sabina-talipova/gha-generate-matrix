@@ -197,21 +197,21 @@ class JobCreator
         return false;
     }
 
-    private function getBranchVersion(): string
+    private function getBranchName(): string
     {
-        $key = str_replace('.x-dev', '', $this->installerVersion);
+        $version = str_replace('.x-dev', '', $this->installerVersion);
         $repo = explode('/', $this->githubRepository)[1];
         if (in_array($repo, NO_INSTALLER_LOCKSTEPPED_REPOS)) {
             $cmsMajor = $this->getCmsMajor();
             $branch = $this->getCleanedBranch();
             if (preg_match('#^[1-9]$#', $branch)) {
-                $key = $cmsMajor;
+                $version = $cmsMajor;
             } elseif (preg_match('#^[1-9]\.([0-9]+)$#', $branch, $matches)) {
-                $key = sprintf('%d.%d', $cmsMajor, $matches[1]);
+                $version = sprintf('%d.%d', $cmsMajor, $matches[1]);
             }
         }
 
-        return $key;
+        return $version;
     }
 
     private function getPhpVersion(int $phpIndex): string
@@ -219,7 +219,7 @@ class JobCreator
         if ($this->phpVersionOverride) {
             return $this->phpVersionOverride;
         }
-        $key = $this->getBranchVersion();
+        $key = $this->getBranchName();
         $phpVersions = INSTALLER_TO_PHP_VERSIONS[$key] ?? INSTALLER_TO_PHP_VERSIONS['4'];
         // Use the max allowed php version
         if (!array_key_exists($phpIndex, $phpVersions)) {
@@ -377,19 +377,14 @@ class JobCreator
                     'phpunit_suite' => $suite,
                 ]);
             } elseif ($this->getCmsMajor() === '5') {
-                $matrix['include'][] = $this->createJob(0, [
-                    'db' => DB_MARIADB,
-                    'phpunit' => true,
-                    'phpunit_suite' => $suite,
-                ]);
-                $matrix['include'][] = $this->createJob(1, [
-                    'db' => DB_MYSQL_80,
-                    'phpunit' => true,
-                    'phpunit_suite' => $suite,
-                ]);
-                if ($this->getBranchVersion() === '5.1') {
-                    $matrix['include'][] = $this->createJob(2, [
-                        'db' => DB_MYSQL_80,
+                $phpVersions = INSTALLER_TO_PHP_VERSIONS[$this->getBranchName()] ?? [];
+                $dbs = [
+                    DB_MARIADB,
+                    DB_MYSQL_80,
+                ];
+                for ($i=0; $i <= $phpVersions; $i++) {
+                    $matrix['include'][] = $this->createJob($i, [
+                        'db' => $dbs[$i],
                         'phpunit' => true,
                         'phpunit_suite' => $suite,
                     ]);
