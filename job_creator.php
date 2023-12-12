@@ -210,7 +210,7 @@ class JobCreator
                 $key = sprintf('%d.%d', $cmsMajor, $matches[1]);
             }
         }
-        echo $key;
+
         return $key;
     }
 
