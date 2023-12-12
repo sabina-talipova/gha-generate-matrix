@@ -26,7 +26,6 @@ const INSTALLER_TO_PHP_VERSIONS = [
     '5.0' => [
         '8.1',
         '8.2',
-        '8.3',
     ],
     '5.1' => [
         '8.1',
@@ -41,7 +40,6 @@ const INSTALLER_TO_PHP_VERSIONS = [
     '5' => [
         '8.1',
         '8.2',
-        '8.3',
     ],
 ];
 
