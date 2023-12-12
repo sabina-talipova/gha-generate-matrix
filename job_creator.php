@@ -197,11 +197,8 @@ class JobCreator
         return false;
     }
 
-    private function getPhpVersion(int $phpIndex): string
+    private function getBranchVersion(): string
     {
-        if ($this->phpVersionOverride) {
-            return $this->phpVersionOverride;
-        }
         $key = str_replace('.x-dev', '', $this->installerVersion);
         $repo = explode('/', $this->githubRepository)[1];
         if (in_array($repo, NO_INSTALLER_LOCKSTEPPED_REPOS)) {
@@ -213,6 +210,16 @@ class JobCreator
                 $key = sprintf('%d.%d', $cmsMajor, $matches[1]);
             }
         }
+
+        return $key;
+    }
+
+    private function getPhpVersion(int $phpIndex): string
+    {
+        if ($this->phpVersionOverride) {
+            return $this->phpVersionOverride;
+        }
+        $key = $this->getBranchVersion();
         $phpVersions = INSTALLER_TO_PHP_VERSIONS[$key] ?? INSTALLER_TO_PHP_VERSIONS['4'];
         // Use the max allowed php version
         if (!array_key_exists($phpIndex, $phpVersions)) {
@@ -235,6 +242,7 @@ class JobCreator
                 return $phpVersion;
             }
         }
+        
         throw new Exception("No valid PHP version allowed");
     }
 
@@ -379,11 +387,13 @@ class JobCreator
                     'phpunit' => true,
                     'phpunit_suite' => $suite,
                 ]);
-                $matrix['include'][] = $this->createJob(2, [
-                    'db' => DB_MYSQL_80,
-                    'phpunit' => true,
-                    'phpunit_suite' => $suite,
-                ]);
+                if ($this->getBranchVersion() === '5.1') {
+                    $matrix['include'][] = $this->createJob(2, [
+                        'db' => DB_MYSQL_80,
+                        'phpunit' => true,
+                        'phpunit_suite' => $suite,
+                    ]);
+                }
             }
         }
         return $matrix;
