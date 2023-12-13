@@ -380,12 +380,13 @@ class JobCreator
                     'phpunit_suite' => $suite,
                 ]);
             } elseif ($this->getCmsMajor() === '5') {
-                $phpToDB = $this->generateMatchMap();
+                // phpunit tests for cms 5 are run on php 8.1, 8.2 or 8.3 and mysql 8.0 or mariadb
+                $phpToDB = $this->generatePhpToDBMap();
                 foreach ($phpToDB as $php => $db) {
                     $matrix['include'][] = $this->createJob($this->getPhpIndexByVersion($php), [
                         'db' => $db,
                         'phpunit' => true,
-                        'phpunit_suite' => 'test',
+                        'phpunit_suite' => $suite,
                     ]);
                 }
             }
@@ -393,11 +394,17 @@ class JobCreator
         return $matrix;
     }
 
+    /**
+     * Return the list of php versions for the branch
+     */
     private function getListOfPhpVersionsByBranchName(): array
     {
         return INSTALLER_TO_PHP_VERSIONS[$this->getBranchName()] ?? INSTALLER_TO_PHP_VERSIONS['4'];
     }
 
+    /**
+     * Return the index of the php version in the list of php versions for the branch
+     */
     private function getPhpIndexByVersion(string $version): int
     {
         return array_search($version, $this->getListOfPhpVersionsByBranchName());
@@ -407,7 +414,7 @@ class JobCreator
      * Generate a map of php versions to db versions
      * e.g. [ '8.1' => 'mariadb', '8.2' => 'mysql80' ]
      */
-    private function generateMatchMap(): array
+    private function generatePhpToDBMap(): array
     {
         $match = [];
         $phpVersions = $this->getListOfPhpVersionsByBranchName();
@@ -417,7 +424,7 @@ class JobCreator
                 $match[$phpVersion] = $dbs[$key];
             } else {
                 if ($key === 0) continue;
-                $match[$phpVersion] = $dbs[$key - 1];
+                $match[$phpVersion] = array_key_exists($key, $dbs) ? $dbs[$key - 1] : DB_MYSQL_80;
             }
         }
 
