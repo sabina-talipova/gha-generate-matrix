@@ -383,7 +383,7 @@ class JobCreator
                 // phpunit tests for cms 5 are run on php 8.1, 8.2 or 8.3 and mysql 8.0 or mariadb
                 $phpToDB = $this->generatePhpToDBMap();
                 foreach ($phpToDB as $php => $db) {
-                    $matrix['include'][] = $this->createJob($this->getPhpIndexByVersion($php), [
+                    $matrix['include'][] = $this->createJob($this->getIndexByPHPVersion($php), [
                         'db' => $db,
                         'phpunit' => true,
                         'phpunit_suite' => $suite,
@@ -405,9 +405,9 @@ class JobCreator
     /**
      * Return the index of the php version in the list of php versions for the branch
      */
-    private function getPhpIndexByVersion(string $version): int
+    private function getIndexByPHPVersion(string $version): int
     {
-        return array_search($version, $this->getListOfPhpVersionsByBranchName());
+        return array_search($version, $this->getListOfPhpVersionsByBranchName()) ?? 0;
     }
 
     /**
@@ -416,19 +416,19 @@ class JobCreator
      */
     private function generatePhpToDBMap(): array
     {
-        $match = [];
+        $map = [];
         $phpVersions = $this->getListOfPhpVersionsByBranchName();
         $dbs = [DB_MARIADB, DB_MYSQL_80];
         foreach ($phpVersions as $key => $phpVersion) {
             if (count($phpVersions) < 3) {
-                $match[$phpVersion] = $dbs[$key];
+                $map[$phpVersion] = $dbs[$key];
             } else {
                 if ($key === 0) continue;
-                $match[$phpVersion] = array_key_exists($key, $dbs) ? $dbs[$key - 1] : DB_MYSQL_80;
+                $map[$phpVersion] = array_key_exists($key, $dbs) ? $dbs[$key - 1] : DB_MYSQL_80;
             }
         }
 
-        return $match;
+        return $map;
     }
 
     private function doRunPhpCoverage(array $run): bool
