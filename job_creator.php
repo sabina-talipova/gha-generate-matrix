@@ -377,7 +377,7 @@ class JobCreator
                 ]);
             } elseif ($this->getCmsMajor() === '5') {
                 $phpToDB = $this->generateMatchMap();
-                foreach ($phpToDB as $version => $db) {
+                foreach ($phpToDB[0] as $version => $db) {
                     $matrix['include'][] = $this->createJob($this->getPhpIndexByVersion($version), [
                         'db' => $db,
                         'phpunit' => true,
