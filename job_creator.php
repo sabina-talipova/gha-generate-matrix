@@ -197,6 +197,10 @@ class JobCreator
         return false;
     }
 
+    /**
+     * Get the branch name from the installer version and left only the minor version
+     * e.g. 4.10.x-dev -> 4.10
+     */
     private function getBranchName(): string
     {
         $version = str_replace('.x-dev', '', $this->installerVersion);
@@ -219,7 +223,7 @@ class JobCreator
         if ($this->phpVersionOverride) {
             return $this->phpVersionOverride;
         }
-        $phpVersions = $this->getListOfPhpVersionsByBranchName() ?? INSTALLER_TO_PHP_VERSIONS['4'];
+        $phpVersions = $this->getListOfPhpVersionsByBranchName();
         // Use the max allowed php version
         if (!array_key_exists($phpIndex, $phpVersions)) {
             for ($i = count($phpVersions) - 1; $i >= 0; $i--) {
@@ -377,9 +381,9 @@ class JobCreator
                 ]);
             } elseif ($this->getCmsMajor() === '5') {
                 $phpToDB = $this->generateMatchMap();
-                foreach ($phpToDB as $key => $value) {
-                    $matrix['include'][] = $this->createJob($this->getPhpIndexByVersion($value['php']), [
-                        'db' => $value['db'],
+                foreach ($phpToDB as $php => $db) {
+                    $matrix['include'][] = $this->createJob($this->getPhpIndexByVersion($php), [
+                        'db' => $db,
                         'phpunit' => true,
                         'phpunit_suite' => 'test',
                     ]);
@@ -391,7 +395,7 @@ class JobCreator
 
     private function getListOfPhpVersionsByBranchName(): array
     {
-        return INSTALLER_TO_PHP_VERSIONS[$this->getBranchName()];
+        return INSTALLER_TO_PHP_VERSIONS[$this->getBranchName()] ?? INSTALLER_TO_PHP_VERSIONS['4'];
     }
 
     private function getPhpIndexByVersion(string $version): int
@@ -399,24 +403,21 @@ class JobCreator
         return array_search($version, $this->getListOfPhpVersionsByBranchName());
     }
 
+    /**
+     * Generate a map of php versions to db versions
+     * e.g. [ '8.1' => 'mariadb', '8.2' => 'mysql80' ]
+     */
     private function generateMatchMap(): array
     {
         $match = [];
         $phpVersions = $this->getListOfPhpVersionsByBranchName();
-        $dbs = [ DB_MARIADB, DB_MYSQL_80 ];
+        $dbs = [DB_MARIADB, DB_MYSQL_80];
         foreach ($phpVersions as $key => $phpVersion) {
             if (count($phpVersions) < 3) {
-                $match[] = [
-                  'php' => $phpVersion,
-                  'db' => $dbs[$key],
-                ];
+                $match[$phpVersion] = $dbs[$key];
             } else {
                 if ($key === 0) continue;
-                
-                $match[] = [
-                  'php' => $phpVersion,
-                  'db' => $dbs[$key - 1],
-                ];
+                $match[$phpVersion] = $dbs[$key - 1];
             }
         }
 
