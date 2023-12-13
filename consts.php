@@ -32,6 +32,7 @@ const INSTALLER_TO_PHP_VERSIONS = [
         '8.2',
     ],
     '5.2' => [
+        '8.1',
         '8.2',
         '8.3',
     ],
