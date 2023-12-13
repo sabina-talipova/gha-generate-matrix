@@ -377,9 +377,9 @@ class JobCreator
                 ]);
             } elseif ($this->getCmsMajor() === '5') {
                 $phpToDB = $this->generateMatchMap();
-                foreach ($phpToDB[0] as $version => $db) {
-                    $matrix['include'][] = $this->createJob($this->getPhpIndexByVersion($version), [
-                        'db' => $db,
+                foreach ($phpToDB[0] as $key => $value) {
+                    $matrix['include'][] = $this->createJob($this->getPhpIndexByVersion($value['php']), [
+                        'db' => $value['db'],
                         'phpunit' => true,
                         'phpunit_suite' => 'test',
                     ]);
@@ -404,13 +404,19 @@ class JobCreator
         $match = [];
         $phpVersions = $this->getListOfPhpVersionsByBranchName();
         $dbs = [ DB_MARIADB, DB_MYSQL_80 ];
-
         foreach ($phpVersions as $key => $phpVersion) {
             if (count($phpVersions) < 3) {
-                $match[][$phpVersion] = $dbs[$key];
+                $match[] = [
+                  'php' => $phpVersion,
+                  'db' => $dbs[$key],
+                ];
             } else {
                 if ($key === 0) continue;
-                $match[][$phpVersion] = array_key_exists($key, $dbs) ? $dbs[$key - 1] : DB_MYSQL_80;
+                
+                $match[] = [
+                  'php' => $phpVersion,
+                  'db' => $dbs[$key - 1],
+                ];
             }
         }
 
